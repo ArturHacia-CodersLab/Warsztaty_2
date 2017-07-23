@@ -80,11 +80,30 @@ public class Excercise {
 		}
 	}
 	// static DB methods
+	public static ArrayList<Excercise> loadAllByUserId(int userId){
+		try{
+			String sql = "SELECT * FROM excercise "
+					+ "JOIN solution ON solution.excercise_id = excercise.id "
+					+ "JOIN users ON solution.users_id = users.id "
+					+ "WHERE users.id = ?";
+			PreparedStatement stmt = DbManager.getPreparedStatement(sql); 
+			stmt.setInt(1, userId);
+			return getExcerciseFromStatement(stmt);
+		}catch(SQLException e){
+			System.err.println(e.getMessage());
+		}
+		return null;
+	}
 	public static ArrayList<Excercise> loadAll(){
+		String sql = "SELECT * FROM excercise"; 
+		PreparedStatement stmt = DbManager.getPreparedStatement(sql); 
+		
+		return getExcerciseFromStatement(stmt);
+	}
+
+	private static ArrayList<Excercise> getExcerciseFromStatement(PreparedStatement stmt) {
 		try {
 			ArrayList<Excercise> excercises = new ArrayList<Excercise>();
-			String sql = "SELECT * FROM excercise"; 
-			PreparedStatement stmt = DbManager.getPreparedStatement(sql); 
 			ResultSet resultSet = stmt.executeQuery();
 			while (resultSet.next()) {
 				Excercise loadedEx = new Excercise();
