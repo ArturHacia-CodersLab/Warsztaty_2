@@ -19,6 +19,16 @@ public class DbManager {
         }
         return connection;
     }
+	public static PreparedStatement getPreparedStatement(String sql, String[] columns){
+		try {
+			return getConnection().prepareStatement(sql, columns);
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return null;
+	}
 	public static PreparedStatement getPreparedStatement(String sql){
 		try {
 			return getConnection().prepareStatement(sql);

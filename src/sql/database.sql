@@ -7,6 +7,8 @@ CREATE TABLE users(
 	id BIGINT(20) NOT NULL AUTO_INCREMENT,
 	username VARCHAR(255),
 	email VARCHAR(255),
+	password VARCHAR(255),
+	salt VARCHAR(255),
 	person_group_id INT(11),
 	PRIMARY KEY(id),
 	FOREIGN KEY(person_group_id) REFERENCES user_group(id));
@@ -16,6 +18,7 @@ CREATE TABLE excercise(
 	title VARCHAR(255),
 	description TEXT,
 	PRIMARY KEY(id));
+
 CREATE TABLE solution(
 	id INT(11) NOT NULL AUTO_INCREMENT,
     created DATETIME,
