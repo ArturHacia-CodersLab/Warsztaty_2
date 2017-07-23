@@ -16,23 +16,33 @@ public class User {
 	private String email;
 	private String password;
 	private String salt;
-	public String getUsername() {
-		return username;
-	}
+	private int person_group_id;
+	
 	public User(){
 		
 	}
-	public User(String username, String email, String password){
+	
+	public User(String username, String email, String password, int person_group_id){
 		this.id = 0;
-		setUsername(username).setEmail(email).setPassword(password);
+		setUsername(username).
+		setEmail(email).
+		setPassword(password).
+		setPersonGroupId(person_group_id);
 	}
+	
 	public User setUsername(String username) {
 		this.username = username;
 		return this;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public User setEmail(String email) {
 		this.email = email;
 		return this;
@@ -48,10 +58,19 @@ public class User {
 	public int getId() {
 		return id;
 	}
+	public User setPersonGroupId(int id){
+		this.person_group_id = id;
+		return this;
+	}
+	public int getPersonGroupId(){
+		return this.person_group_id;
+	}
 	@Override
 	public String toString(){
 		return "id: "+this.id+" username: "+this.username+" email:"+this.email+" password:" + this.password;
 	}
+	
+	
 	// non-static DB methods
 	public void saveToDB(){
 		if(this.id==0){
@@ -87,10 +106,12 @@ public class User {
 	public void delete(){
 		String sql = "DELETE FROM users WHERE id= ?";
 		try{
-			PreparedStatement stmt = DbManager.getPreparedStatement(sql);
-			stmt.setInt(1, this.id); 
-			stmt.executeUpdate();
-			this.id=0;
+			if(this.id!=0){
+				PreparedStatement stmt = DbManager.getPreparedStatement(sql);
+				stmt.setInt(1, this.id); 
+				stmt.executeUpdate();
+				this.id=0;
+			}
 		}catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}

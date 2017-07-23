@@ -13,9 +13,9 @@ public class DbManager {
         String userName = "root";
         String password = "";
         if(connection==null){
-        	connection = DriverManager.getConnection(url + dbName, userName,password);
+        		connection = DriverManager.getConnection(url + dbName, userName,password);
         }else if(connection.isClosed()){
-        	connection = DriverManager.getConnection(url + dbName, userName,password);
+        		connection = DriverManager.getConnection(url + dbName, userName,password);
         }
         return connection;
     }
