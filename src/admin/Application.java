@@ -3,6 +3,7 @@ package admin;
 import java.util.ArrayList;
 
 import model.User;
+import sql.DbManager;
 
 public class Application {
 
@@ -29,5 +30,10 @@ public class Application {
 		
 		System.out.println(User.loadById(0)); // powinienem dostać null
 		System.out.println(User.loadById(1)); // powinienem dostać User
+		closeApplication();
+	}
+	static void closeApplication(){
+		DbManager.close();
+		System.exit(0);
 	}
 }
