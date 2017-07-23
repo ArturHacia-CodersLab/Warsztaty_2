@@ -117,11 +117,27 @@ public class User {
 		}
 	}
 	// static DB methods
-	public static ArrayList<User> loadAll(){
+	public static ArrayList<User> loadAllByGroupId(int groupId){
+		String sql = "SELECT * FROM users "
+				+ "JOIN user_group ON users.person_group_id = user_group.id "
+				+ "WHERE user_group.id = ?";
+		PreparedStatement stmt = DbManager.getPreparedStatement(sql);
 		try {
-			ArrayList<User> users = new ArrayList<User>();
-			String sql = "SELECT * FROM users"; 
-			PreparedStatement stmt = DbManager.getPreparedStatement(sql); 
+			stmt.setInt(1, groupId);
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return getUsersFromStatement(stmt);
+	}
+
+	public static ArrayList<User> loadAll(){
+		String sql = "SELECT * FROM users"; 
+		PreparedStatement stmt = DbManager.getPreparedStatement(sql); 
+		return getUsersFromStatement(stmt);
+	}
+	private static ArrayList<User> getUsersFromStatement(PreparedStatement stmt) {
+		try {
+			ArrayList<User> users = new ArrayList<User>(); 
 			ResultSet resultSet = stmt.executeQuery();
 			while (resultSet.next()) {
 				User loadedUser = new User();
@@ -130,13 +146,13 @@ public class User {
 				loadedUser.password = resultSet.getString("password"); 
 				loadedUser.email = resultSet.getString("email"); 
 				loadedUser.salt = resultSet.getString("salt"); 
+				loadedUser.person_group_id = resultSet.getInt("person_group_id");
 				users.add(loadedUser);
 			}
 			return users;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		} 
-		
 		return null;
 	}
 	public static User loadById(int id){
