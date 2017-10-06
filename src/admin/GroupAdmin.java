@@ -2,22 +2,22 @@ package admin;
 
 import java.util.ArrayList;
 
-import model.Excercise; 
+import model.Group; 
 
-public class ExcerciseAdmin {
+public class GroupAdmin {
 	
 	static void prompt(){
 		while(true){
-			System.out.println("Wybierz jedną z opcji list (lista ćwiczeń), add (dodanie ćwiczenia), edit (edycja ćwiczenia), delete (usunięcie ćwiczenia), quit (zakończenie programu):");
+			System.out.println("Wybierz jedną z opcji list (lista grup), add (dodanie grupy), edit (edycja grupy), delete (usunięcie grupy), quit (zakończenie programu):");
 			String action = Application.scaner.nextLine();
 			if(action.equals("add")){
-				addExcerciseAction();
+				addGroupAction();
 			}else if(action.equals("list")){
-				listExcercisesAction();
+				listGroupsAction();
 			}else if(action.equals("edit")){
-				editExcerciseAction();
+				editGroupAction();
 			}else if(action.equals("delete")){
-				removeExcerciseAction();
+				removeGroupAction();
 			}else if(action.equals("quit")){
 				System.out.println("Koniec");
 				Application.closeApplication();
@@ -26,52 +26,46 @@ public class ExcerciseAdmin {
 			}
 		}
 	}
-	static void listExcercisesAction(){
-		ArrayList<Excercise> ex = Excercise.loadAll();
-		for(Excercise _ex: ex){
+	static void listGroupsAction(){
+		ArrayList<Group> ex = Group.loadAll();
+		for(Group _ex: ex){
 			System.out.println(_ex);
 		}
 	}
-	static void addExcerciseAction(){
-		System.out.println("Dodanie ćwiczenia");
+	static void addGroupAction(){
+		System.out.println("Dodanie grupy");
 
-		String title = promptString(Type.TITLE);
-		String description = promptString(Type.DESCRIPTION);
-		Excercise ex = new Excercise(title,description);
+		String title = promptString(Type.TITLE); 
+		Group ex = new Group(title);
 		ex.saveToDB();
 
 		System.out.println("Dodano użytkownika");
 	}
-	static void editExcerciseAction(){
+	static void editGroupAction(){
 		System.out.println("Edycja");
 		int id = promptInt(Type.ID);
 		Application.scaner.nextLine();
-		String title = promptString(Type.TITLE);
-		String description = promptString(Type.DESCRIPTION);
-		Excercise ex = Excercise.loadById(id);
-		if(!title.isEmpty()) ex.setTitle(title);
-		if(!description.isEmpty()) ex.setDescription(description);
+		String title = promptString(Type.TITLE); 
+		Group ex = Group.loadById(id);
+		if(!title.isEmpty()) ex.setName(title); 
 		ex.saveToDB();
 		System.out.println("Edycja zakończona");
 	}
-	static void removeExcerciseAction(){
+	static void removeGroupAction(){
 		System.out.println("Usuń");
 		int id = promptInt(Type.ID);
 		Application.scaner.nextLine();
 		if(id!=0 && Application.areYouSurePrompt()){
-			Excercise ex = Excercise.loadById(id);
+			Group ex = Group.loadById(id);
 			ex.delete();
-			System.out.println("Usunięto ćwiczenie");
+			System.out.println("Usunięto grupę");
 		}
 	}
 	public static String promptString(Type type){
 		switch (type) {
 			case TITLE:
-				System.out.println("Podaj nazwę ćwiczenia:");
-				break;
-			case DESCRIPTION:
-				System.out.println("Podaj opis ćwiczenia:");
-				break;
+				System.out.println("Podaj nazwę grupy:");
+				break;  
 			 
 			default:
 				break; 
@@ -81,7 +75,7 @@ public class ExcerciseAdmin {
 	public static int promptInt(Type type){
 		switch (type) {
 			case ID:
-				System.out.println("Podaj id ćwiczenia:");
+				System.out.println("Podaj id grupy:");
 				break;
 			default:
 				break; 

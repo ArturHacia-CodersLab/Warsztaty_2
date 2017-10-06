@@ -9,13 +9,15 @@ public class Application {
 	public static void main(String[] args) {
 		scaner = new Scanner(System.in);
 		while(true){
-			System.out.println("Wybierz moduł: user, excercise:");
+			System.out.println("Wybierz moduł: user, excercise, group:");
 			String action = scaner.nextLine();
 			if(action.equals("user")){
 				UserAdmin.prompt();
 				
 			}else if(action.equals("excercise")){
 				ExcerciseAdmin.prompt();
+			}else if(action.equals("group")){
+				GroupAdmin.prompt();
 			}else {
 				System.out.println("Podałeś nieprawidłowy moduł");
 			}
