@@ -11,7 +11,7 @@ import sql.DbManager;
 
 public class User {
 
-	private int id;
+	private long id;
 	private String username;
 	private String email;
 	private String password;
@@ -55,7 +55,7 @@ public class User {
 		this.password = BCrypt.hashpw(password, salt);
 		return this;
 	}
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	public User setPersonGroupId(int id){
@@ -76,11 +76,12 @@ public class User {
 		if(this.id==0){
 			try {
 				String generatedColumns[] = { "ID" };
-				PreparedStatement stmt = DbManager.getPreparedStatement("INSERT INTO users(username,email,password,salt) VALUES (?,?,?,?)",generatedColumns);
+				PreparedStatement stmt = DbManager.getPreparedStatement("INSERT INTO users(username,email,password,salt,person_group_id) VALUES (?,?,?,?,?)",generatedColumns);
 				stmt.setString(1, this.username);
 				stmt.setString(2, this.email);
 				stmt.setString(3, this.password);
 				stmt.setString(4, this.salt);
+				stmt.setInt(5, this.person_group_id);
 				stmt.executeUpdate();
 				ResultSet rs = stmt.getGeneratedKeys(); 
 				if (rs.next()) {
@@ -91,12 +92,14 @@ public class User {
 			}
 		}else{
 			try{
-				PreparedStatement stmt = DbManager.getPreparedStatement("UPADTE users SET username = ?, email = ?, password = ?, salt = ? WHERE id = ?");
+				PreparedStatement stmt = DbManager.getPreparedStatement("UPDATE users SET username=?, email=?, person_group_id=?, password=?, salt=? WHERE id=?");
 				stmt.setString(1, this.username);
 				stmt.setString(2, this.email);
-				stmt.setString(3, this.password);
-				stmt.setString(4, this.salt);
-				stmt.setInt(5, this.id);
+				stmt.setInt(3, this.person_group_id);
+				stmt.setString(4, this.password);
+				stmt.setString(5, this.salt);
+				stmt.setLong(6, this.id);
+//				System.out.println(stmt);
 				stmt.executeUpdate();
 			}catch (SQLException e) {
 				System.err.println(e.getMessage());
@@ -108,7 +111,7 @@ public class User {
 		try{
 			if(this.id!=0){
 				PreparedStatement stmt = DbManager.getPreparedStatement(sql);
-				stmt.setInt(1, this.id); 
+				stmt.setLong(1, this.id); 
 				stmt.executeUpdate();
 				this.id=0;
 			}
@@ -139,9 +142,13 @@ public class User {
 		try {
 			ArrayList<User> users = new ArrayList<User>(); 
 			ResultSet resultSet = stmt.executeQuery();
+//			resultSet.last();
+//			int size = resultSet.getRow();
+//			resultSet.beforeFirst();
+//			System.out.println("LOG COUNT Result: "+size);
 			while (resultSet.next()) {
 				User loadedUser = new User();
-				loadedUser.id = resultSet.getInt("id"); 
+				loadedUser.id = resultSet.getLong("id"); 
 				loadedUser.username = resultSet.getString("username"); 
 				loadedUser.password = resultSet.getString("password"); 
 				loadedUser.email = resultSet.getString("email"); 

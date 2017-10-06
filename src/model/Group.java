@@ -50,7 +50,7 @@ public class Group {
 			}
 		}else{
 			try{
-				PreparedStatement stmt = DbManager.getPreparedStatement("UPADTE user_group SET name = ? WHERE id = ?");
+				PreparedStatement stmt = DbManager.getPreparedStatement("UPDATE user_group SET name = ? WHERE id = ?");
 				stmt.setString(1, this.name);  
 				stmt.setInt(2, this.id);
 				stmt.executeUpdate();

@@ -71,7 +71,7 @@ public class Solution {
 			}
 		}else{
 			try{
-				PreparedStatement stmt = DbManager.getPreparedStatement("UPADTE solution SET created = ?,updated = ?,description = ?, WHERE id = ?");
+				PreparedStatement stmt = DbManager.getPreparedStatement("UPDATE solution SET created = ?,updated = ?,description = ?, WHERE id = ?");
 				stmt.setDate(1, (java.sql.Date) this.created); 
 				stmt.setDate(2, (java.sql.Date) this.updated);
 				stmt.setString(3, description);

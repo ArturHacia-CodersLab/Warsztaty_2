@@ -58,7 +58,7 @@ public class Excercise {
 			}
 		}else{
 			try{
-				PreparedStatement stmt = DbManager.getPreparedStatement("UPADTE excercise SET title = ?, description = ? WHERE id = ?");
+				PreparedStatement stmt = DbManager.getPreparedStatement("UPDATE excercise SET title = ?, description = ? WHERE id = ?");
 				stmt.setString(1, this.title);
 				stmt.setString(2, this.description); 
 				stmt.setInt(3, this.id);
