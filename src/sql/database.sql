@@ -8,7 +8,6 @@ CREATE TABLE users(
 	username VARCHAR(255),
 	email VARCHAR(255),
 	password VARCHAR(255),
-	salt VARCHAR(255),
 	person_group_id INT(11),
 	PRIMARY KEY(id),
 	FOREIGN KEY(person_group_id) REFERENCES user_group(id));
